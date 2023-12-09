@@ -3,15 +3,18 @@ import "./newscreen.css";
 import { io } from "socket.io-client";
 import { useState, useEffect } from "react";
 import { LiMensaje, UlMensajes } from "./ui-components";
+import { ReactComponent as UserIcon } from "./user_icon.svg";
 
 const socket = io("http://localhost:3000");
 
 function App() {
   const [isConnected, setIsConnected] = useState(false);
   const [nuevoMensaje, setNuevoMensaje] = useState("");
+  const [nuevoNombre, setNuevoNombre] = useState("anonymous");
   const [mensajes, setMensajes] = useState([]);
 
   useEffect(() => {
+    console.log("useEffect");
     socket.on("connect", () => setIsConnected(true));
 
     socket.on("chat_message", (data) => {
@@ -32,7 +35,7 @@ function App() {
     });
   };
 
-  const msgPills = (e) => {
+  const msgPills = () => {
     return (
       <div className="App">
         <h2>{isConnected ? "CONECTADO" : "NO CONECTADO"}</h2>
@@ -49,7 +52,7 @@ function App() {
     );
   };
 
-  const msgPhone = (e) => {
+  const msgPhone = () => {
     return (
       <div>
         <h2>{isConnected ? "CONECTADO" : "NO CONECTADO"}</h2>
@@ -59,40 +62,26 @@ function App() {
             <span>
               <i className="far fa-user"></i>
             </span>
+            <UserIcon />
             <input
               type="text"
               id="name-input"
               className="name-input"
               value="anonymous"
               maxLength="20"
+              onChange={(e) => setNuevoNombre(e.target.value)}
             />
           </div>
 
           <ul className="message-container" id="message-container">
-            {mensajes.map((mensaje) => (
+            {mensajes.map((mensaje) => {
               <li className="message-left">
                 <p className="message">
                   {mensaje.usuario}: {mensaje.mensaje}
                   <span>bluebird ● 26 July 10:40</span>
                 </p>
-              </li>
-            ))}
-            {/* These li elements are only for reference, and therefore, they are commented out... */}
-            {/*             <li className="message-left">
-              <p className="message">
-                lorem impsun
-                <span>bluebird ● 26 July 10:40</span>
-              </p>
-            </li>
-
-            <li className="message-right">
-              <p className="message">
-                lorem impsun
-                <span>bluebird ● 26 July 10:40</span>
-              </p>
-            </li>
-
- */}{" "}
+              </li>;
+            })}
             <li className="message-feedback">
               <p className="feedback" id="feedback">
                 ✍️ killer is typing a message...
@@ -114,7 +103,6 @@ function App() {
               className="send-button"
               onClick={enviarMensaje}
             >
-              send{" "}
               <span>
                 <i className="fas fa-paper-plane"></i>
               </span>
@@ -128,8 +116,8 @@ function App() {
     );
   };
 
-  //return msgPhone();
-  return msgPills();
+  return msgPhone();
+  //return msgPills();
 }
 
 export default App;
