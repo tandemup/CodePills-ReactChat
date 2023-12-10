@@ -4,6 +4,8 @@ import { io } from "socket.io-client";
 import { useState, useEffect } from "react";
 import { LiMensaje, UlMensajes } from "./ui-components";
 import { ReactComponent as UserIcon } from "./user_icon.svg";
+import { ReactComponent as SendIcon } from "./send_icon.svg";
+import ChatInput from "./components/ChatInput.js";
 
 const socket = io("http://localhost:3000");
 
@@ -59,10 +61,10 @@ function App() {
         <h1 className="title">iChat 💬</h1>
         <div className="main">
           <div className="name">
+            <UserIcon />
             <span>
               <i className="far fa-user"></i>
             </span>
-            <UserIcon />
             <input
               type="text"
               id="name-input"
@@ -106,6 +108,7 @@ function App() {
               <span>
                 <i className="fas fa-paper-plane"></i>
               </span>
+              <SendIcon />
             </button>
           </form>
         </div>
